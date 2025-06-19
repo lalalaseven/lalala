@@ -48,7 +48,7 @@
         }
         .seating-plan { 
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr;
             gap: 15px;
             margin-top: 20px;
         }
@@ -62,6 +62,8 @@
             font-weight: bold;
             position: relative;
             min-height: 60px;
+            max-width: 300px;
+            margin: 0 auto;
         }
         .position-name {
             position: absolute;
@@ -75,19 +77,15 @@
             font-size: 16px;
             margin-top: 15px;
         }
-        .front { grid-column: 2; }
         .teacher-desk {
-            grid-column: 2;
             background-color: #e6f7ff;
             margin-bottom: 20px;
             text-align: center;
             padding: 10px;
             border-radius: 8px;
             font-weight: bold;
-        }
-        .role-icon {
-            font-size: 24px;
-            margin-bottom: 5px;
+            max-width: 300px;
+            margin: 0 auto 20px auto;
         }
     </style>
 </head>
@@ -106,7 +104,7 @@
     
     <div id="seatingResult" class="seating-plan">
         <div class="teacher-desk">王者峡谷</div>
-        <div class="seat front" id="seat1">
+        <div class="seat" id="seat1">
             <div class="position-name">打野</div>
             <div class="player-name">待分配</div>
         </div>
@@ -129,7 +127,6 @@
     </div>
     
     <script>
-        // 位置颜色映射
         const positionColors = {
             '打野': '#ffd6e7',
             '辅助': '#d6e4ff',
@@ -139,7 +136,6 @@
         };
 
         function assignSeats() {
-            // 获取姓名
             const names = [
                 document.getElementById('name1').value.trim(),
                 document.getElementById('name2').value.trim(),
@@ -148,20 +144,14 @@
                 document.getElementById('name5').value.trim()
             ];
             
-            // 验证输入
             const uniqueNames = new Set(names.filter(name => name !== ''));
             if (uniqueNames.size !== 5) {
                 alert("请输入5个不同的玩家名称！");
                 return;
             }
             
-            // 打乱姓名顺序
             const shuffledNames = [...names].sort(() => Math.random() - 0.5);
             
-            // 获取所有位置
-            const positions = Array.from(document.querySelectorAll('.position-name')).map(el => el.textContent);
-            
-            // 分配座位
             for (let i = 1; i <= 5; i++) {
                 const seat = document.getElementById(`seat${i}`);
                 const position = seat.querySelector('.position-name').textContent;
@@ -170,14 +160,12 @@
                 playerNameEl.textContent = shuffledNames[i-1];
                 seat.style.backgroundColor = positionColors[position];
                 
-                // 添加动画效果
                 seat.style.animation = 'none';
-                void seat.offsetWidth; // 触发重绘
+                void seat.offsetWidth;
                 seat.style.animation = 'pulse 0.5s';
             }
         }
 
-        // 添加CSS动画
         const style = document.createElement('style');
         style.textContent = `
             @keyframes pulse {
