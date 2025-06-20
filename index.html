@@ -1,180 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>王者荣耀位置抽签</title>
-    <style>
-        body { 
-            font-family: 'Microsoft YaHei', sans-serif; 
-            max-width: 600px; 
-            margin: 0 auto; 
-            padding: 20px; 
-            background-color: #f0f2f5;
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        button { 
-            padding: 12px 20px; 
-            font-size: 16px; 
-            margin: 15px 0; 
-            cursor: pointer; 
-            background-color: #1890ff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            display: block;
-            width: 200px;
-            margin-left: auto;
-            margin-right: auto;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #40a9ff;
-        }
-        .name-input { 
-            margin: 8px; 
-            padding: 10px; 
-            width: 120px; 
-            border: 1px solid #d9d9d9;
-            border-radius: 4px;
-        }
-        .input-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .seating-plan { 
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .seat { 
-            border: 1px solid #d9d9d9;
-            padding: 20px;
-            text-align: center;
-            border-radius: 8px;
-            background-color: white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            font-weight: bold;
-            position: relative;
-            min-height: 60px;
-            max-width: 300px;
-            margin: 0 auto;
-        }
-        .position-name {
-            position: absolute;
-            top: 5px;
-            left: 0;
-            right: 0;
-            font-size: 12px;
-            color: #666;
-        }
-        .player-name {
-            font-size: 16px;
-            margin-top: 15px;
-        }
-        .teacher-desk {
-            background-color: #e6f7ff;
-            margin-bottom: 20px;
-            text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: bold;
-            max-width: 300px;
-            margin: 0 auto 20px auto;
-        }
-    </style>
+  <meta charset="utf-8">
+  <title>王者荣耀位置 + 英雄随机抽签</title>
+  <style>
+    body { font-family: 'Microsoft YaHei', sans-serif; max-width: 700px; margin: 20px auto; padding: 10px; background: #f0f2f5; }
+    h1 { text-align: center; color: #333; }
+    .input-container, .ban-container { display: flex; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    input { margin: 5px; padding: 8px; width: 120px; border-radius:4px; border:1px solid #ccc; }
+    button { display:block; margin:10px auto; padding:12px 20px; font-size:16px; background:#1890ff; color:#fff; border:none; border-radius:4px; cursor:pointer; }
+    button:hover { background:#40a9ff; }
+    .seating-plan { margin-top:20px; }
+    .seat { background: #fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:15px; margin:10px auto; width:300px; text-align:center; position:relative; font-weight:bold; min-height:80px; }
+    .position-name { position:absolute; top:5px; width:100%; font-size:12px; color:#666; }
+    .player-name, .hero-name { margin-top:18px; font-size:16px; }
+    .ban-container { text-align:center; }
+    .ban-label { min-width: 60px; align-self:center; }
+  </style>
 </head>
 <body>
-    <h1>王者荣耀位置抽签</h1>
-    
-    <div class="input-container">
-        <input type="text" id="name1" class="name-input" placeholder="玩家1" value="鸟帅">
-        <input type="text" id="name2" class="name-input" placeholder="玩家2" value="鸟代">
-        <input type="text" id="name3" class="name-input" placeholder="玩家3" value="鸟俊">
-        <input type="text" id="name4" class="name-input" placeholder="玩家4" value="先贝">
-        <input type="text" id="name5" class="name-input" placeholder="玩家5" value="zzz">
-    </div>
-    
-    <button onclick="assignSeats()">随机分配英雄位置</button>
-    
-    <div id="seatingResult" class="seating-plan">
-        <div class="teacher-desk">王者峡谷</div>
-        <div class="seat" id="seat1">
-            <div class="position-name">打野</div>
-            <div class="player-name">待分配</div>
-        </div>
-        <div class="seat" id="seat2">
-            <div class="position-name">辅助</div>
-            <div class="player-name">待分配</div>
-        </div>
-        <div class="seat" id="seat3">
-            <div class="position-name">射手</div>
-            <div class="player-name">待分配</div>
-        </div>
-        <div class="seat" id="seat4">
-            <div class="position-name">法师</div>
-            <div class="player-name">待分配</div>
-        </div>
-        <div class="seat" id="seat5">
-            <div class="position-name">对抗</div>
-            <div class="player-name">待分配</div>
-        </div>
-    </div>
-    
-    <script>
-        const positionColors = {
-            '打野': '#ffd6e7',
-            '辅助': '#d6e4ff',
-            '射手': '#ffccc7',
-            '法师': '#d9f7be',
-            '对抗': '#fff1b8'
-        };
+  <h1>王者荣耀 抽签 + 英雄分配</h1>
+  <div class="input-container">
+    <input id="name1" placeholder="玩家1" value="鸟帅">
+    <input id="name2" placeholder="玩家2" value="鸟代">
+    <input id="name3" placeholder="玩家3" value="鸟俊">
+    <input id="name4" placeholder="玩家4" value="先贝">
+    <input id="name5" placeholder="玩家5" value="zzz">
+  </div>
+  <div class="ban-container">
+    <span class="ban-label">Ban 英雄：</span>
+    <input id="ban1" placeholder="ban1">
+    <input id="ban2" placeholder="ban2">
+    <input id="ban3" placeholder="ban3">
+  </div>
+  <button onclick="assignSeats()">开始抽签 & 英雄分配</button>
 
-        function assignSeats() {
-            const names = [
-                document.getElementById('name1').value.trim(),
-                document.getElementById('name2').value.trim(),
-                document.getElementById('name3').value.trim(),
-                document.getElementById('name4').value.trim(),
-                document.getElementById('name5').value.trim()
-            ];
-            
-            const uniqueNames = new Set(names.filter(name => name !== ''));
-            if (uniqueNames.size !== 5) {
-                alert("请输入5个不同的玩家名称！");
-                return;
-            }
-            
-            const shuffledNames = [...names].sort(() => Math.random() - 0.5);
-            
-            for (let i = 1; i <= 5; i++) {
-                const seat = document.getElementById(`seat${i}`);
-                const position = seat.querySelector('.position-name').textContent;
-                const playerNameEl = seat.querySelector('.player-name');
-                
-                playerNameEl.textContent = shuffledNames[i-1];
-                seat.style.backgroundColor = positionColors[position];
-                
-                seat.style.animation = 'none';
-                void seat.offsetWidth;
-                seat.style.animation = 'pulse 0.5s';
-            }
-        }
+  <div class="seating-plan">
+    <div class="seat" id="seat1"><div class="position-name">打野</div><div class="player-name">—</div><div class="hero-name">—</div></div>
+    <div class="seat" id="seat2"><div class="position-name">辅助</div><div class="player-name">—</div><div class="hero-name">—</div></div>
+    <div class="seat" id="seat3"><div class="position-name">射手</div><div class="player-name">—</div><div class="hero-name">—</div></div>
+    <div class="seat" id="seat4"><div class="position-name">法师</div><div class="player-name">—</div><div class="hero-name">—</div></div>
+    <div class="seat" id="seat5"><div class="position-name">对抗</div><div class="player-name">—</div><div class="hero-name">—</div></div>
+  </div>
 
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes pulse {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.05); }
-                100% { transform: scale(1); }
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
+<script>
+  const positionColors = {
+    '打野': '#ffd6e7', '辅助':'#d6e4ff', '射手':'#ffccc7', '法师':'#d9f7be', '对抗':'#fff1b8'
+  };
+
+  const heroPool = {
+    '打野': ['韩信','李白','阿轲','兰陵王','赵云','镜','裴擒虎','司马懿','云中君','孙悟空'],
+    '辅助': ['蔡文姬','鬼谷子','张飞','孙膑','瑶','庄周','牛魔','刘邦','钟馗','明世隐'],
+    '射手': ['后羿','虞姬','狄仁杰','孙尚香','马可波罗','百里守约','成吉思汗','黄忠','伽罗','蒙犽','艾琳','公孙离'],
+    '法师': ['王昭君','诸葛亮','貂蝉','小乔','妲己','张良','嬴政','姜子牙','王昭君','米莱狄'],
+    '对抗': ['吕布','花木兰','关羽','廉颇','夏侯惇','程咬金','典韦','蒙恬','项羽','牛魔']
+  };
+
+  function assignSeats() {
+    const names = [1,2,3,4,5].map(i => document.getElementById('name'+i).value.trim());
+    const unique = new Set(names.filter(n=>n));
+    if (unique.size !== 5) { alert('请输入5个不重复玩家'); return; }
+
+    const bans = [1,2,3].map(i=>document.getElementById('ban'+i).value.trim()).filter(n=>n);
+    const shuffled = names.sort(()=>Math.random()-0.5);
+
+    for (let i=1;i<=5;i++) {
+      const seat = document.getElementById('seat'+i);
+      const pos = seat.querySelector('.position-name').textContent;
+      const playerEl = seat.querySelector('.player-name');
+      const heroEl = seat.querySelector('.hero-name');
+
+      playerEl.textContent = shuffled[i-1];
+      let heroes = heroPool[pos].filter(h=>!bans.includes(h));
+      if (heroes.length===0) { heroEl.textContent='无可选英雄'; }
+      else {
+        let h = heroes[Math.floor(Math.random()*heroes.length)];
+        heroEl.textContent = `🎮 ${h}`;
+      }
+
+      seat.style.background=positionColors[pos];
+    }
+  }
+</script>
 </body>
 </html>
